@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class NewTransactionForm extends StatelessWidget {
   final titleController = TextEditingController();
@@ -7,6 +8,22 @@ class NewTransactionForm extends StatelessWidget {
   final Function onSave;
 
   NewTransactionForm({required this.onSave});
+
+  void submitData() {
+    final enteredTitle = titleController.text;
+    final amountTemp = amountController.text;
+
+    if (enteredTitle.isEmpty || amountTemp.isEmpty) return;
+
+    final enteredAmount = double.parse(amountTemp);
+
+    if (enteredAmount <= 0) return;
+
+    onSave(
+      enteredTitle,
+      enteredAmount,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,16 +37,17 @@ class NewTransactionForm extends StatelessWidget {
             TextFormField(
               decoration: InputDecoration(labelText: 'Title'),
               controller: titleController,
+              onFieldSubmitted: (_) => submitData(),
             ),
             TextFormField(
               decoration: InputDecoration(labelText: 'Amount'),
               controller: amountController,
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              onFieldSubmitted: (_) => submitData(),
             ),
             TextButton(
-              onPressed: () => onSave(
-                titleController.text,
-                double.parse(amountController.text),
-              ),
+              onPressed: submitData,
               child: Text('Add Transaction'),
               style: TextButton.styleFrom(primary: Colors.teal),
             ),
