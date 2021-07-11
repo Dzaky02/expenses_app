@@ -1,5 +1,7 @@
 import 'package:expenses_app/models/transaction.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(MyApp());
@@ -8,6 +10,10 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // For importing locale code
+    // See https://github.com/dart-lang/intl/blob/master/lib/date_symbol_data_local.dart
+    // for the detail
+    initializeDateFormatting();
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -51,9 +57,53 @@ class HomePage extends StatelessWidget {
           ),
           Column(
             children: transactions
-                .map((item) => Card(
-                      child: Text(item.title),
-                    ))
+                .map(
+                  (item) => Card(
+                    child: Row(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 15,
+                          ),
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.teal,
+                              width: 2,
+                            ),
+                          ),
+                          child: Text(
+                            '\$ ${item.amount}',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                              color: Colors.teal,
+                            ),
+                          ),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              item.title,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              DateFormat('EEEE, dd MMMM y', 'in').format(
+                                item.date.toLocal(),
+                              ),
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                )
                 .toList(),
           )
         ],
