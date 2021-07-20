@@ -51,7 +51,9 @@ class _NewTransactionFormState extends State<NewTransactionForm> {
               decoration: InputDecoration(labelText: 'Amount'),
               controller: amountController,
               keyboardType: TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp('[0-9.]'))
+              ],
               onFieldSubmitted: (_) => submitData(),
             ),
             TextButton(
