@@ -32,6 +32,9 @@ dependencies:
   # For formating purpose
   intl: ^0.17.0
 
+  # Consuming google fonts
+  google_fonts: ^2.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

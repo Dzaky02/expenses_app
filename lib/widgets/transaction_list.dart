@@ -31,11 +31,9 @@ class TransactionList extends StatelessWidget {
               ),
               child: Text(
                 '\$ ${transactions[index].amount.toStringAsFixed(2)}',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  color: Theme.of(context).primaryColor,
-                ),
+                style: Theme.of(context).textTheme.headline6?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).primaryColor),
               ),
             ),
             Column(
@@ -43,16 +41,15 @@ class TransactionList extends StatelessWidget {
               children: [
                 Text(
                   transactions[index].title,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
                 Text(
                   DateFormat('EEEE, dd MMMM y', 'in').format(
                     transactions[index].date.toLocal(),
                   ),
-                  style: TextStyle(color: Colors.grey),
+                  style: Theme.of(context).textTheme.caption,
                 ),
               ],
             ),
