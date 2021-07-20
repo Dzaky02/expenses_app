@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class NewTransactionForm extends StatelessWidget {
-  final titleController = TextEditingController();
-  final amountController = TextEditingController();
-
+class NewTransactionForm extends StatefulWidget {
   final Function onSave;
 
   NewTransactionForm({required this.onSave});
+
+  @override
+  _NewTransactionFormState createState() => _NewTransactionFormState();
+}
+
+class _NewTransactionFormState extends State<NewTransactionForm> {
+  final titleController = TextEditingController();
+
+  final amountController = TextEditingController();
 
   void submitData() {
     final enteredTitle = titleController.text;
@@ -19,10 +25,12 @@ class NewTransactionForm extends StatelessWidget {
 
     if (enteredAmount <= 0) return;
 
-    onSave(
+    widget.onSave(
       enteredTitle,
       enteredAmount,
     );
+
+    Navigator.pop(context);
   }
 
   @override
