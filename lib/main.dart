@@ -188,36 +188,38 @@ class _HomePageState extends State<HomePage> {
     }
 
     // page body
-    final pageBody = SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          isLandscape
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Show Chart',
-                      style: Theme.of(context).textTheme.subtitle2,
-                    ),
-                    Switch.adaptive(
-                      value: _showChart,
-                      onChanged: (value) {
-                        setState(() {
-                          _showChart = value;
-                        });
-                      },
-                      activeColor: Theme.of(context).accentColor,
-                    ),
-                  ],
-                )
-              : chartView(0.3),
-          isLandscape
-              ? _showChart
-                  ? chartView(0.8)
-                  : transListView
-              : transListView,
-        ],
+    final pageBody = SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            isLandscape
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Show Chart',
+                        style: Theme.of(context).textTheme.subtitle2,
+                      ),
+                      Switch.adaptive(
+                        value: _showChart,
+                        onChanged: (value) {
+                          setState(() {
+                            _showChart = value;
+                          });
+                        },
+                        activeColor: Theme.of(context).accentColor,
+                      ),
+                    ],
+                  )
+                : chartView(0.3),
+            isLandscape
+                ? _showChart
+                    ? chartView(0.8)
+                    : transListView
+                : transListView,
+          ],
+        ),
       ),
     );
 
