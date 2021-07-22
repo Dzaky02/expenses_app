@@ -39,9 +39,18 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Card(
       elevation: 6,
-      margin: EdgeInsets.all(20),
+      margin: isLandscape
+          ? EdgeInsets.only(
+              bottom: 20,
+              left: 20,
+              right: 20,
+            )
+          : EdgeInsets.all(20),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Row(

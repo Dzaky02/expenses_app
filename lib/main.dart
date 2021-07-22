@@ -44,6 +44,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // helper variable
+  var _showChart = false;
+
   final List<Transaction> _userTransactions = [
     Transaction(
       id: 't1',
@@ -102,9 +105,34 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     final double statusBar = MediaQuery.of(context).padding.top;
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
+    // Widgets
+    //   App Bar
     final appBar = AppBar(
       title: Text('Personal Expenses'),
+      actions: [
+        if (isLandscape)
+          IconButton(
+            onPressed: () => _bottomSheetAddNewTransaction(context),
+            icon: Icon(Icons.add),
+          )
+      ],
     );
+    //  transaction listview
+    final transListView = TransactionList(
+      transactions: _userTransactions,
+      deleteTransaction: _deleteTransaction,
+    );
+    //  chart view
+    Widget chartView(double heightPercentage) {
+      return Container(
+        height: (size.height - appBar.preferredSize.height - statusBar) *
+            heightPercentage,
+        child: Chart(recentTransactions: _recentTransactions),
+      );
+    }
 
     return Scaffold(
       appBar: appBar,
@@ -112,22 +140,40 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-                height:
-                    (size.height - appBar.preferredSize.height - statusBar) *
-                        0.3,
-                child: Chart(recentTransactions: _recentTransactions)),
-            TransactionList(
-              transactions: _userTransactions,
-              deleteTransaction: _deleteTransaction,
-            ),
+            isLandscape
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Show Chart',
+                        style: Theme.of(context).textTheme.subtitle2,
+                      ),
+                      Switch(
+                        value: _showChart,
+                        onChanged: (value) {
+                          setState(() {
+                            _showChart = value;
+                          });
+                        },
+                      ),
+                    ],
+                  )
+                : chartView(0.3),
+            isLandscape
+                ? _showChart
+                    ? chartView(0.8)
+                    : transListView
+                : transListView,
           ],
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _bottomSheetAddNewTransaction(context),
-        child: Icon(Icons.add),
+      floatingActionButton: Visibility(
+        visible: !isLandscape,
+        child: FloatingActionButton(
+          onPressed: () => _bottomSheetAddNewTransaction(context),
+          child: Icon(Icons.add),
+        ),
       ),
     );
   }
