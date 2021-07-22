@@ -14,13 +14,14 @@ class NewTransactionForm extends StatefulWidget {
 class _NewTransactionFormState extends State<NewTransactionForm> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
-  late DateTime _selectedDate;
+  DateTime? _selectedDate;
 
   void _submitData() {
     final enteredTitle = _titleController.text;
     final amountTemp = _amountController.text;
 
-    if (enteredTitle.isEmpty || amountTemp.isEmpty) return;
+    if (enteredTitle.isEmpty || amountTemp.isEmpty || _selectedDate == null)
+      return;
 
     final enteredAmount = double.parse(amountTemp);
 
@@ -29,6 +30,7 @@ class _NewTransactionFormState extends State<NewTransactionForm> {
     widget.onSave(
       enteredTitle,
       enteredAmount,
+      _selectedDate,
     );
 
     Navigator.pop(context);
@@ -77,7 +79,7 @@ class _NewTransactionFormState extends State<NewTransactionForm> {
                 children: [
                   Text(_selectedDate == null
                       ? 'No Date Choosen!'
-                      : 'Picked Date: ${DateFormat.yMMMEd('in').format(_selectedDate)}'),
+                      : 'Picked Date: ${DateFormat.yMMMEd('in').format(_selectedDate!)}'),
                   TextButton(
                     onPressed: _presentDatePicker,
                     child: Text('Choose Date'),
@@ -91,7 +93,7 @@ class _NewTransactionFormState extends State<NewTransactionForm> {
             ElevatedButton(
               onPressed: _submitData,
               child: Text('Add Transaction'),
-              style: TextButton.styleFrom(
+              style: ElevatedButton.styleFrom(
                 primary: Theme.of(context).primaryColor,
               ),
             ),
