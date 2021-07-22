@@ -100,15 +100,23 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+    final double statusBar = MediaQuery.of(context).padding.top;
+    final appBar = AppBar(
+      title: Text('Personal Expenses'),
+    );
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Personal Expenses'),
-      ),
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Chart(recentTransactions: _recentTransactions),
+            Container(
+                height:
+                    (size.height - appBar.preferredSize.height - statusBar) *
+                        0.3,
+                child: Chart(recentTransactions: _recentTransactions)),
             TransactionList(
               transactions: _userTransactions,
               deleteTransaction: _deleteTransaction,

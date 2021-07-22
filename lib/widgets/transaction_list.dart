@@ -14,9 +14,12 @@ class TransactionList extends StatelessWidget {
   Widget build(BuildContext context) {
     return transactions.isEmpty
         ? Center(
-            child: Text(
-              'No transaction added yet!',
-              style: Theme.of(context).textTheme.headline6,
+            child: Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                'No transaction added yet!',
+                style: Theme.of(context).textTheme.headline6,
+              ),
             ),
           )
         : ListView.builder(
