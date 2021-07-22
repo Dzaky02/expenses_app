@@ -1,9 +1,9 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+
+import './adaptive_button.dart';
 
 class NewTransactionForm extends StatefulWidget {
   final Function onSave;
@@ -89,26 +89,10 @@ class _NewTransactionFormState extends State<NewTransactionForm> {
                     Text(_selectedDate == null
                         ? 'No Date Choosen!'
                         : 'Picked Date: ${DateFormat.yMMMEd('in').format(_selectedDate!)}'),
-                    Platform.isIOS
-                        ? CupertinoButton(
-                            child: Text(
-                              'Choose Date',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText1
-                                  ?.copyWith(
-                                    color: Theme.of(context).primaryColor,
-                                  ),
-                            ),
-                            onPressed: _presentDatePicker,
-                          )
-                        : TextButton(
-                            onPressed: _presentDatePicker,
-                            child: Text('Choose Date'),
-                            style: TextButton.styleFrom(
-                              primary: Theme.of(context).primaryColor,
-                            ),
-                          ),
+                    AdaptiveTextButton(
+                      text: 'Choose Date',
+                      onPress: _presentDatePicker,
+                    ),
                   ],
                 ),
               ),
