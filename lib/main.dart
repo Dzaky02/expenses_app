@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -143,21 +144,35 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     final double statusBar = MediaQuery.of(context).padding.top;
+    final isIOS = Platform.isIOS;
     final isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
 
     // Widgets
     //   App Bar
-    final appBar = AppBar(
-      title: Text('Personal Expenses'),
-      actions: [
-        if (isLandscape || Platform.isIOS)
-          IconButton(
-            onPressed: () => _bottomSheetAddNewTransaction(context),
-            icon: Icon(Icons.add),
+    final PreferredSizeWidget appBar = isIOS
+        ? CupertinoNavigationBar(
+            middle: Text('Personal Expenses'),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CupertinoButton(
+                  onPressed: () => _bottomSheetAddNewTransaction(context),
+                  child: Icon(CupertinoIcons.add),
+                )
+              ],
+            ),
           )
-      ],
-    );
+        : AppBar(
+            title: Text('Personal Expenses'),
+            actions: [
+              if (isLandscape)
+                IconButton(
+                  onPressed: () => _bottomSheetAddNewTransaction(context),
+                  icon: Icon(Icons.add),
+                )
+            ],
+          ) as PreferredSizeWidget;
     //  transaction listview
     final transListView = TransactionList(
       transactions: _userTransactions,
@@ -172,48 +187,57 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    return Scaffold(
-      appBar: appBar,
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            isLandscape
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Show Chart',
-                        style: Theme.of(context).textTheme.subtitle2,
-                      ),
-                      Switch.adaptive(
-                        value: _showChart,
-                        onChanged: (value) {
-                          setState(() {
-                            _showChart = value;
-                          });
-                        },
-                        activeColor: Theme.of(context).accentColor,
-                      ),
-                    ],
-                  )
-                : chartView(0.3),
-            isLandscape
-                ? _showChart
-                    ? chartView(0.8)
-                    : transListView
-                : transListView,
-          ],
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Visibility(
-        visible: (!isLandscape && !Platform.isIOS),
-        child: FloatingActionButton(
-          onPressed: () => _bottomSheetAddNewTransaction(context),
-          child: Icon(Icons.add),
-        ),
+    // page body
+    final pageBody = SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          isLandscape
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Show Chart',
+                      style: Theme.of(context).textTheme.subtitle2,
+                    ),
+                    Switch.adaptive(
+                      value: _showChart,
+                      onChanged: (value) {
+                        setState(() {
+                          _showChart = value;
+                        });
+                      },
+                      activeColor: Theme.of(context).accentColor,
+                    ),
+                  ],
+                )
+              : chartView(0.3),
+          isLandscape
+              ? _showChart
+                  ? chartView(0.8)
+                  : transListView
+              : transListView,
+        ],
       ),
     );
+
+    return isIOS
+        ? CupertinoPageScaffold(
+            child: pageBody,
+            navigationBar: appBar as ObstructingPreferredSizeWidget,
+          )
+        : Scaffold(
+            appBar: appBar,
+            body: pageBody,
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+            floatingActionButton: Visibility(
+              visible: (!isLandscape && !isIOS),
+              child: FloatingActionButton(
+                onPressed: () => _bottomSheetAddNewTransaction(context),
+                child: Icon(Icons.add),
+              ),
+            ),
+          );
   }
 }
