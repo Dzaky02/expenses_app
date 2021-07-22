@@ -1,9 +1,11 @@
-import 'package:expenses_app/widgets/chart.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import './models/transaction.dart';
+import './widgets/chart.dart';
 import './widgets/new_transaction_form.dart';
 import './widgets/transaction_list.dart';
 
@@ -149,7 +151,7 @@ class _HomePageState extends State<HomePage> {
     final appBar = AppBar(
       title: Text('Personal Expenses'),
       actions: [
-        if (isLandscape)
+        if (isLandscape || Platform.isIOS)
           IconButton(
             onPressed: () => _bottomSheetAddNewTransaction(context),
             icon: Icon(Icons.add),
@@ -184,13 +186,14 @@ class _HomePageState extends State<HomePage> {
                         'Show Chart',
                         style: Theme.of(context).textTheme.subtitle2,
                       ),
-                      Switch(
+                      Switch.adaptive(
                         value: _showChart,
                         onChanged: (value) {
                           setState(() {
                             _showChart = value;
                           });
                         },
+                        activeColor: Theme.of(context).accentColor,
                       ),
                     ],
                   )
@@ -205,7 +208,7 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Visibility(
-        visible: !isLandscape,
+        visible: (!isLandscape && !Platform.isIOS),
         child: FloatingActionButton(
           onPressed: () => _bottomSheetAddNewTransaction(context),
           child: Icon(Icons.add),
