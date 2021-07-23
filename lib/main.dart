@@ -166,31 +166,15 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            isLandscape
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Show Chart',
-                        style: Theme.of(context).textTheme.subtitle2,
-                      ),
-                      Switch.adaptive(
-                        value: _showChart,
-                        onChanged: (value) {
-                          setState(() {
-                            _showChart = value;
-                          });
-                        },
-                        activeColor: Theme.of(context).accentColor,
-                      ),
-                    ],
-                  )
-                : chartView(0.3),
-            isLandscape
-                ? _showChart
-                    ? chartView(0.8)
-                    : transListView
-                : transListView,
+            if (isLandscape)
+              ..._buildLandscapeContent(
+                chartView(0.8),
+                transListView,
+              ),
+            if (!isLandscape) ...[
+              chartView(0.3),
+              transListView,
+            ],
           ],
         ),
       ),
@@ -242,4 +226,27 @@ class _HomePageState extends State<HomePage> {
       _userTransactions.removeWhere((element) => element.id == id);
     });
   }
+
+  List<Widget> _buildLandscapeContent(Widget chartView, Widget transListView) =>
+      [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Show Chart',
+              style: Theme.of(context).textTheme.subtitle2,
+            ),
+            Switch.adaptive(
+              value: _showChart,
+              onChanged: (value) {
+                setState(() {
+                  _showChart = value;
+                });
+              },
+              activeColor: Theme.of(context).accentColor,
+            ),
+          ],
+        ),
+        _showChart ? chartView : transListView
+      ];
 }
