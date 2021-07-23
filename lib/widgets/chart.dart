@@ -5,7 +5,7 @@ import './chart_bar.dart';
 import '../models/transaction.dart';
 
 class Chart extends StatelessWidget {
-  Chart({required this.recentTransactions});
+  const Chart({required this.recentTransactions});
 
   final List<Transaction> recentTransactions;
 
@@ -45,12 +45,12 @@ class Chart extends StatelessWidget {
     return Card(
       elevation: 6,
       margin: isLandscape
-          ? EdgeInsets.only(
+          ? const EdgeInsets.only(
               bottom: 20,
               left: 20,
               right: 20,
             )
-          : EdgeInsets.all(20),
+          : const EdgeInsets.all(20),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Row(

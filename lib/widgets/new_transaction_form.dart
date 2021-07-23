@@ -8,7 +8,7 @@ import './adaptive_button.dart';
 class NewTransactionForm extends StatefulWidget {
   final Function onSave;
 
-  NewTransactionForm({required this.onSave});
+  const NewTransactionForm({required this.onSave});
 
   @override
   _NewTransactionFormState createState() => _NewTransactionFormState();
@@ -69,14 +69,14 @@ class _NewTransactionFormState extends State<NewTransactionForm> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               TextFormField(
-                decoration: InputDecoration(labelText: 'Title'),
+                decoration: const InputDecoration(labelText: 'Title'),
                 controller: _titleController,
                 onFieldSubmitted: (_) => _submitData(),
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Amount'),
+                decoration: const InputDecoration(labelText: 'Amount'),
                 controller: _amountController,
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp('[0-9.]'))
                 ],
@@ -98,7 +98,7 @@ class _NewTransactionFormState extends State<NewTransactionForm> {
               ),
               ElevatedButton(
                 onPressed: _submitData,
-                child: Text('Add Transaction'),
+                child: const Text('Add Transaction'),
                 style: ElevatedButton.styleFrom(
                   primary: Theme.of(context).primaryColor,
                 ),

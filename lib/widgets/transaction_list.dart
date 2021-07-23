@@ -7,7 +7,7 @@ class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
   final Function deleteTransaction;
 
-  TransactionList(
+  const TransactionList(
       {required this.transactions, required this.deleteTransaction});
 
   @override
@@ -15,7 +15,7 @@ class TransactionList extends StatelessWidget {
     return transactions.isEmpty
         ? Center(
             child: Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Text(
                 'No transaction added yet!',
                 style: Theme.of(context).textTheme.headline6,
@@ -24,11 +24,11 @@ class TransactionList extends StatelessWidget {
           )
         : ListView.builder(
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             itemCount: transactions.length,
             itemBuilder: (context, index) => Card(
               elevation: 5,
-              margin: EdgeInsets.symmetric(
+              margin: const EdgeInsets.symmetric(
                 vertical: 6,
                 horizontal: 16,
               ),
@@ -60,15 +60,15 @@ class TransactionList extends StatelessWidget {
                     ? TextButton.icon(
                         onPressed: () =>
                             deleteTransaction(transactions[index].id),
-                        icon: Icon(Icons.delete),
-                        label: Text('delete'),
+                        icon: const Icon(Icons.delete),
+                        label: const Text('delete'),
                         style: TextButton.styleFrom(
                             primary: Theme.of(context).errorColor),
                       )
                     : IconButton(
                         onPressed: () =>
                             deleteTransaction(transactions[index].id),
-                        icon: Icon(Icons.delete),
+                        icon: const Icon(Icons.delete),
                         color: Theme.of(context).errorColor),
               ),
             ),

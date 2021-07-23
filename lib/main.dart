@@ -113,33 +113,6 @@ class _HomePageState extends State<HomePage> {
         .toList();
   }
 
-  void _addNewTransaction(String title, double amount, DateTime choosenDate) {
-    final newTx = Transaction(
-      id: DateTime.now().millisecond.toString(),
-      title: title,
-      amount: amount,
-      date: choosenDate,
-    );
-
-    setState(() {
-      _userTransactions.add(newTx);
-    });
-  }
-
-  void _bottomSheetAddNewTransaction(BuildContext ctx) {
-    showModalBottomSheet(
-        context: ctx,
-        builder: (_) {
-          return NewTransactionForm(onSave: _addNewTransaction);
-        });
-  }
-
-  void _deleteTransaction(String id) {
-    setState(() {
-      _userTransactions.removeWhere((element) => element.id == id);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -152,24 +125,24 @@ class _HomePageState extends State<HomePage> {
     //   App Bar
     final PreferredSizeWidget appBar = isIOS
         ? CupertinoNavigationBar(
-            middle: Text('Personal Expenses'),
+            middle: const Text('Personal Expenses'),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 CupertinoButton(
                   onPressed: () => _bottomSheetAddNewTransaction(context),
-                  child: Icon(CupertinoIcons.add),
+                  child: const Icon(CupertinoIcons.add),
                 )
               ],
             ),
           )
         : AppBar(
-            title: Text('Personal Expenses'),
+            title: const Text('Personal Expenses'),
             actions: [
               if (isLandscape)
                 IconButton(
                   onPressed: () => _bottomSheetAddNewTransaction(context),
-                  icon: Icon(Icons.add),
+                  icon: const Icon(Icons.add),
                 )
             ],
           ) as PreferredSizeWidget;
@@ -237,9 +210,36 @@ class _HomePageState extends State<HomePage> {
               visible: (!isLandscape && !isIOS),
               child: FloatingActionButton(
                 onPressed: () => _bottomSheetAddNewTransaction(context),
-                child: Icon(Icons.add),
+                child: const Icon(Icons.add),
               ),
             ),
           );
+  }
+
+  void _addNewTransaction(String title, double amount, DateTime choosenDate) {
+    final newTx = Transaction(
+      id: DateTime.now().millisecond.toString(),
+      title: title,
+      amount: amount,
+      date: choosenDate,
+    );
+
+    setState(() {
+      _userTransactions.add(newTx);
+    });
+  }
+
+  void _bottomSheetAddNewTransaction(BuildContext ctx) {
+    showModalBottomSheet(
+        context: ctx,
+        builder: (_) {
+          return NewTransactionForm(onSave: _addNewTransaction);
+        });
+  }
+
+  void _deleteTransaction(String id) {
+    setState(() {
+      _userTransactions.removeWhere((element) => element.id == id);
+    });
   }
 }

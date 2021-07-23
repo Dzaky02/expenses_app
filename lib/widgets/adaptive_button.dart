@@ -7,7 +7,7 @@ class AdaptiveTextButton extends StatelessWidget {
   final String text;
   final VoidCallback onPress;
 
-  AdaptiveTextButton({required this.text, required this.onPress});
+  const AdaptiveTextButton({required this.text, required this.onPress});
 
   @override
   Widget build(BuildContext context) {
