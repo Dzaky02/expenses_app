@@ -76,7 +76,8 @@ class _NewTransactionFormState extends State<NewTransactionForm> {
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Amount'),
                 controller: _amountController,
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp('[0-9.]'))
                 ],
