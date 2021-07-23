@@ -27,6 +27,7 @@ class TransactionList extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             itemCount: transactions.length,
             itemBuilder: (context, index) => TransactionItem(
+              key: ValueKey(transactions[index].id),
               transactions: transactions[index],
               deleteTransaction: deleteTransaction,
             ),

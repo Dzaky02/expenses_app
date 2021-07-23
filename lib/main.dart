@@ -48,6 +48,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   // helper variable
+  final isIOS = Platform.isIOS;
   var _showChart = false;
 
   final List<Transaction> _userTransactions = [
@@ -117,35 +118,12 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     final double statusBar = MediaQuery.of(context).padding.top;
-    final isIOS = Platform.isIOS;
     final isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
 
     // Widgets
     //   App Bar
-    final PreferredSizeWidget appBar = isIOS
-        ? CupertinoNavigationBar(
-            middle: const Text('Personal Expenses'),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CupertinoButton(
-                  onPressed: () => _bottomSheetAddNewTransaction(context),
-                  child: const Icon(CupertinoIcons.add),
-                )
-              ],
-            ),
-          )
-        : AppBar(
-            title: const Text('Personal Expenses'),
-            actions: [
-              if (isLandscape)
-                IconButton(
-                  onPressed: () => _bottomSheetAddNewTransaction(context),
-                  icon: const Icon(Icons.add),
-                )
-            ],
-          ) as PreferredSizeWidget;
+    final PreferredSizeWidget appBar = _buildAppBar(isLandscape);
     //  transaction listview
     final transListView = TransactionList(
       transactions: _userTransactions,
@@ -227,6 +205,30 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  PreferredSizeWidget _buildAppBar(bool isLandscape) => isIOS
+      ? CupertinoNavigationBar(
+          middle: const Text('Personal Expenses'),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CupertinoButton(
+                onPressed: () => _bottomSheetAddNewTransaction(context),
+                child: const Icon(CupertinoIcons.add),
+              )
+            ],
+          ),
+        )
+      : AppBar(
+          title: const Text('Personal Expenses'),
+          actions: [
+            if (isLandscape)
+              IconButton(
+                onPressed: () => _bottomSheetAddNewTransaction(context),
+                icon: const Icon(Icons.add),
+              )
+          ],
+        ) as PreferredSizeWidget;
+
   List<Widget> _buildLandscapeContent(Widget chartView, Widget transListView) =>
       [
         Row(
@@ -247,6 +249,6 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-        _showChart ? chartView : transListView
+        _showChart ? chartView : transListView,
       ];
 }
